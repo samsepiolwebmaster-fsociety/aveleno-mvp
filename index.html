@@ -232,7 +232,20 @@ input{font-family:var(--font-b)}
   cursor:pointer;transition:all .2s;
 }
 .dl-btn-card:hover{background:var(--gold2)}
-.del-btn-card{
+.buy-btn-card{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px;background:transparent;color:var(--gold);
+  border:1px solid var(--gold);border-radius:8px;font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.buy-btn-card:hover{background:var(--gold);color:#000}
+.payment-banner{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  background:var(--green);color:#000;
+  padding:16px;text-align:center;font-weight:700;font-size:15px;
+  transform:translateY(-100%);transition:transform .3s;
+}
+.payment-banner.on{transform:translateY(0)}
   width:34px;height:34px;border-radius:8px;
   background:transparent;border:1px solid rgba(239,68,68,0.25);
   color:var(--red);font-size:14px;cursor:pointer;transition:all .2s;
@@ -448,6 +461,9 @@ input{font-family:var(--font-b)}
     <button class="close-player" onclick="closePlayer()">✕</button>
   </div>
 </div>
+
+<!-- PAYMENT SUCCESS BANNER -->
+<div class="payment-banner" id="paymentBanner">✅ Paiement confirmé ! Ton téléchargement est prêt.</div>
 
 <script>
 // ===== SUPABASE INIT =====
@@ -762,8 +778,11 @@ function renderTrackCard(track, isOwner) {
         <div class="track-card-artist">${safeArtist} · ${date}</div>
         <div class="track-card-actions">
           ${deleteBtn}
+          <button class="buy-btn-card" onclick="event.stopPropagation();buyTrack('${track.id}','${safeTitle}','${safeArtist}',299)">
+            🛒 2,99€
+          </button>
           <button class="dl-btn-card" onclick="event.stopPropagation();downloadTrack('${track.file_path}','${safeTitle}')">
-            ⬇ Télécharger
+            ⬇ Gratuit
           </button>
         </div>
       </div>
@@ -932,8 +951,62 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ===== INIT =====
+// ===== BUY TRACK =====
+async function buyTrack(trackId, title, artist, priceCents) {
+  const btn = event.currentTarget;
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳';
+
+  try {
+    const res = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        track_id: trackId,
+        track_title: title,
+        artist_name: artist,
+        license_type: 'MP3 Personnel',
+        price_cents: priceCents
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Erreur: ' + (data.error || 'Impossible de créer le paiement'));
+      btn.disabled = false;
+      btn.innerHTML = orig;
+    }
+  } catch (err) {
+    alert('Erreur réseau');
+    btn.disabled = false;
+    btn.innerHTML = orig;
+  }
+}
+
+// ===== HANDLE PAYMENT RETURN =====
+function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    const banner = document.getElementById('paymentBanner');
+    banner.classList.add('on');
+    setTimeout(() => banner.classList.remove('on'), 5000);
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  if (params.get('payment') === 'cancelled') {
+    showMsg(document.getElementById('upload-msg') || document.createElement('div'), 'error', 'Paiement annulé.');
+  }
+  if (params.get('stripe_connected') === '1') {
+    alert('✅ Stripe connecté avec succès !');
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
 async function init() {
+  checkPaymentReturn();
   const { data: { session } } = await supa.auth.getSession();
   if (session) {
     currentUser = session.user;
