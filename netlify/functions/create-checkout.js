@@ -1,6 +1,6 @@
 export default async (req) => {
-  const STRIPE_SECRET = Netlify.env.get('STRIPE_SECRET_KEY');
-  const BASE_URL = Netlify.env.get('URL') || 'https://avelenov3.netlify.app';
+  const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
+  const BASE_URL = process.env.SITE_URL || 'https://avelenov3.netlify.app';
 
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
