@@ -328,6 +328,24 @@ input{font-family:var(--font-b)}
 </div>
 
 
+<!-- ======================== SUCCESS PAIEMENT ======================== -->
+<div id="view-success" class="view">
+  <div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 24px;">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:48px;text-align:center;max-width:480px;width:100%">
+      <div style="font-size:56px;margin-bottom:20px">🎵</div>
+      <div id="successStatus" style="font-size:16px;font-weight:700;margin-bottom:24px;color:var(--text2)">Vérification…</div>
+      <div id="successTitle" style="font-family:var(--font-d);font-size:26px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px"></div>
+      <div id="successArtist" style="font-size:14px;color:var(--text2);margin-bottom:28px"></div>
+      <button id="downloadBtn" style="display:none;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;background:var(--gold);color:#000;border:none;border-radius:var(--r);font-size:15px;font-weight:800;cursor:pointer;">
+        ⬇ Télécharger mon morceau
+      </button>
+      <div id="expiryNotice" style="font-size:12px;color:var(--text3);margin-top:12px"></div>
+      <button onclick="showView('catalogue');loadPublicTracks()" style="margin-top:20px;background:transparent;border:none;color:var(--text3);font-size:13px;cursor:pointer;text-decoration:underline">← Retour au catalogue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== AUTH ======================== -->
 <div id="view-auth" class="view">
   <div class="auth-wrap">
     <div class="auth-box fadein">
@@ -988,21 +1006,51 @@ async function buyTrack(trackId, title, artist, priceCents) {
 }
 
 // ===== HANDLE PAYMENT RETURN =====
-function checkPaymentReturn() {
+async function checkPaymentReturn() {
   const params = new URLSearchParams(window.location.search);
+
   if (params.get('payment') === 'success') {
-    const banner = document.getElementById('paymentBanner');
-    banner.classList.add('on');
-    setTimeout(() => banner.classList.remove('on'), 5000);
-    // Clean URL
+    const sessionId = params.get('session_id');
+    const trackId = params.get('track_id');
     window.history.replaceState({}, '', window.location.pathname);
+
+    if (sessionId && trackId) {
+      showView('success');
+      document.getElementById('successStatus').textContent = '⏳ Vérification du paiement…';
+
+      try {
+        const res = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId, track_id: trackId })
+        });
+        const data = await res.json();
+
+        if (data.download_url) {
+          document.getElementById('successStatus').textContent = '✅ Paiement confirmé !';
+          document.getElementById('successTitle').textContent = data.title || 'Ton morceau';
+          document.getElementById('successArtist').textContent = data.artist || '';
+          document.getElementById('downloadBtn').style.display = 'flex';
+          document.getElementById('downloadBtn').onclick = () => {
+            const a = document.createElement('a');
+            a.href = data.download_url;
+            a.download = (data.title || 'morceau') + '.mp3';
+            a.click();
+          };
+          document.getElementById('expiryNotice').textContent = '⏰ Lien valable 1 heure';
+        } else {
+          document.getElementById('successStatus').textContent = '❌ ' + (data.error || 'Erreur de vérification');
+        }
+      } catch (err) {
+        document.getElementById('successStatus').textContent = '❌ Erreur réseau';
+      }
+    }
   }
+
   if (params.get('payment') === 'cancelled') {
-    showMsg(document.getElementById('upload-msg') || document.createElement('div'), 'error', 'Paiement annulé.');
-  }
-  if (params.get('stripe_connected') === '1') {
-    alert('✅ Stripe connecté avec succès !');
     window.history.replaceState({}, '', window.location.pathname);
+    showView('catalogue');
+    loadPublicTracks();
   }
 }
 async function init() {
