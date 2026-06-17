@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+# Verrou Basic Auth sur tout le site (mot de passe = var d'env SITE_PASSWORD)
+[[edge_functions]]
+  path = "/*"
+  function = "auth"
