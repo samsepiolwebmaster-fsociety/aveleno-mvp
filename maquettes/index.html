@@ -149,9 +149,10 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text
           <div class="bar" role="slider" aria-label="Position"><div class="fill"></div></div>
           <div class="time"><span class="cur">0:00</span> / 1:20</div>
         </div>
+        <div class="cpt" data-cpt="too-litt-rmx">▶ — écoutes · ↓ — téléchargements</div>
         <audio preload="metadata" src="too-litt-rmx-maq-1-011026.mp3"></audio>
         <div class="actions">
-          <a class="btn btn-gold" href="too-litt-rmx-maq-1-011026.mp3" download="Davis Johnes - Jessica &amp; Thor (Too Lit rmx)_Maq_1_011026.mp3">↓ Télécharger gratuitement</a>
+          <a class="btn btn-gold" data-dl="too-litt-rmx" href="too-litt-rmx-maq-1-011026.mp3" download="Davis Johnes - Jessica &amp; Thor (Too Lit rmx)_Maq_1_011026.mp3">↓ Télécharger gratuitement</a>
           <!-- Lien futur : https://arapiano.fr/tribune/too-litt-rmx/article.html -->
           <span class="btn btn-ghost" title="Bientôt">Lire l'analyse · bientôt</span>
         </div>
@@ -173,9 +174,10 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text
           <div class="bar" role="slider" aria-label="Position"><div class="fill"></div></div>
           <div class="time"><span class="cur">0:00</span> / 2:20</div>
         </div>
+        <div class="cpt" data-cpt="la-vie-est-chere">▶ — écoutes · ↓ — téléchargements</div>
         <audio preload="metadata" src="la-vie-est-chere-mix-1-190325.mp3"></audio>
         <div class="actions">
-          <a class="btn btn-gold" href="la-vie-est-chere-mix-1-190325.mp3" download="Davis Johnes - LA VIE EST CHERE - MIX 1 (190325).mp3">↓ Télécharger gratuitement</a>
+          <a class="btn btn-gold" data-dl="la-vie-est-chere" href="la-vie-est-chere-mix-1-190325.mp3" download="Davis Johnes - LA VIE EST CHERE - MIX 1 (190325).mp3">↓ Télécharger gratuitement</a>
           <!-- Lien futur : https://arapiano.fr/tribune/la-vie-est-chere/article.html -->
           <span class="btn btn-ghost" title="Bientôt">Lire l'analyse · bientôt</span>
         </div>
@@ -348,6 +350,20 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text
     select(cards[0]);
   }
   mq.addEventListener ? mq.addEventListener('change',place) : mq.addListener(place);
+})();
+</script>
+<style>.cpt{font-size:12.5px;color:#a89a7a;letter-spacing:.04em;margin:6px 0 2px}.cpt b{color:#e8c46a;font-weight:600}</style>
+<script>
+(function(){
+  var api='/api/compteur', joue={};
+  function aff(d){ document.querySelectorAll('[data-cpt]').forEach(function(el){ var c=d[el.dataset.cpt]||{play:0,download:0};
+    el.innerHTML='▶ <b>'+c.play+'</b> écoute'+(c.play>1?'s':'')+' · ↓ <b>'+c.download+'</b> téléchargement'+(c.download>1?'s':''); }); }
+  function charger(){ fetch(api,{cache:'no-store'}).then(function(r){return r.json();}).then(aff).catch(function(){}); }
+  function compter(slug,type){ fetch(api,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({slug:slug,type:type})}).then(charger).catch(function(){}); }
+  document.querySelectorAll('article.track').forEach(function(a){ var slug=a.dataset.slug, au=a.querySelector('audio');
+    if(au) au.addEventListener('play',function(){ if(!joue[slug]){ joue[slug]=true; compter(slug,'play'); } }); });
+  document.querySelectorAll('[data-dl]').forEach(function(b){ b.addEventListener('click',function(){ compter(b.dataset.dl,'download'); }); });
+  charger();
 })();
 </script>
 </body>
