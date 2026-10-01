@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maquettes · gratuit — Davis Johnes · Aveleno</title>
-<meta name="description" content="Les maquettes originales de Davis Johnes, en écoute et en téléchargement gratuit sur Aveleno.">
+<meta name="description" content="Les maquettes originales de Davis Johnes, en écoute, avec les paroles, et en téléchargement gratuit sur Aveleno.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -18,7 +18,8 @@
   --font-d:'Syne',sans-serif;--font-b:'DM Sans',sans-serif;
   --r:12px;--r-lg:18px;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height:100vh}
+html{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 button{font-family:var(--font-b);cursor:pointer}
 
@@ -29,19 +30,21 @@ button{font-family:var(--font-b);cursor:pointer}
 .nav a.back{font-size:13px;color:var(--text2)}
 .nav a.back:hover{color:var(--gold)}
 
-.wrap{max-width:860px;margin:0 auto;padding:64px 24px 40px;position:relative}
-.glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,0.07) 0%,transparent 70%);
-  top:-120px;left:50%;transform:translateX(-50%);pointer-events:none}
+.wrap{max-width:1240px;margin:0 auto;padding:64px 24px 40px;position:relative}
+.glow{position:absolute;width:600px;height:600px;max-width:100%;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,0.07) 0%,transparent 70%);
+  top:-120px;left:30%;transform:translateX(-50%);pointer-events:none}
 .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;border:1px solid rgba(245,166,35,0.3);
   background:rgba(245,166,35,0.06);font-size:12px;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px}
 h1{font-family:var(--font-d);font-size:clamp(40px,7vw,72px);font-weight:800;line-height:0.95;letter-spacing:-2px;margin-bottom:18px}
 h1 span{color:var(--gold)}
 .intro{font-size:17px;color:var(--text2);line-height:1.7;max-width:560px;margin-bottom:48px}
 
-.tracks{display:grid;gap:18px}
-.track{display:flex;gap:20px;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:border-color .2s}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+.tracks{display:grid;gap:18px;min-width:0}
+.track{display:flex;gap:20px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:border-color .2s;cursor:pointer}
 .track:hover{border-color:var(--border2)}
-.track.playing{border-color:rgba(245,166,35,0.45);box-shadow:0 0 40px -18px var(--gold-glow)}
+.track.active{border-color:rgba(245,166,35,0.3)}
+.track.playing{border-color:rgba(245,166,35,0.55);box-shadow:0 0 40px -18px var(--gold-glow)}
 .cover{flex:0 0 auto;width:112px;height:112px;border-radius:var(--r);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:10px;
   font-family:var(--font-d);font-weight:800;font-size:13px;line-height:1.05;letter-spacing:-.2px;color:#0b0b0b}
 .cover.lvc{background:radial-gradient(circle at 30% 25%,#ffd27a 0%,#F5A623 38%,#7a4a06 100%)}
@@ -56,7 +59,7 @@ h1 span{color:var(--gold)}
   display:flex;align-items:center;justify-content:center;padding:0;transition:.18s}
 .play:hover{background:var(--gold);color:#0b0b0b}
 .play svg{width:15px;height:15px;fill:currentColor}
-.bar{flex:1;height:16px;display:flex;align-items:center;cursor:pointer;position:relative}
+.bar{flex:1;min-width:0;height:16px;display:flex;align-items:center;cursor:pointer;position:relative}
 .bar::before{content:'';position:absolute;left:0;right:0;height:3px;border-radius:99px;background:var(--border2)}
 .fill{position:relative;height:3px;border-radius:99px;background:var(--gold);width:0}
 .time{flex:0 0 auto;font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums}
@@ -64,16 +67,58 @@ h1 span{color:var(--gold)}
 .btn{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:10px 18px;font-size:13px;font-weight:600;border:1px solid transparent;transition:.18s}
 .btn-gold{background:var(--gold);color:#0b0b0b}
 .btn-gold:hover{background:var(--gold2)}
-.btn-ghost{border-color:var(--border2);color:var(--text3);cursor:default}
+.btn-ghost{border-color:var(--border2);color:var(--text3);cursor:default;background:none}
+.btn-line{border-color:var(--border2);color:var(--text2);background:none}
+.btn-line:hover{border-color:var(--gold);color:var(--gold)}
 
-.note{margin-top:40px;font-size:13px;color:var(--text3);line-height:1.7}
+/* dates + empreinte */
+.facts{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:grid;gap:5px;font-size:12px;color:var(--text3);line-height:1.5}
+.facts b{color:var(--text2);font-weight:500}
+.hash{display:flex;align-items:center;gap:8px;min-width:0}
+.hash b{white-space:nowrap}
+.hash code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--text2);cursor:pointer;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hash code.full{white-space:normal;word-break:break-all}
+.copy{flex:0 0 auto;border:1px solid var(--border2);background:none;color:var(--text3);border-radius:6px;font-size:11px;padding:2px 8px}
+.copy:hover{color:var(--gold);border-color:var(--gold)}
+
+/* panneau paroles */
+.lyrics{position:sticky;top:84px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);display:flex;flex-direction:column;max-height:calc(100vh - 108px);min-width:0}
+.lyr-head{padding:18px 20px 14px;border-bottom:1px solid var(--border)}
+.lyr-k{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);font-weight:600;display:flex;justify-content:space-between;gap:10px}
+.lyr-k span{color:var(--text3);letter-spacing:.6px}
+.lyr-t{font-family:var(--font-d);font-weight:800;font-size:18px;margin-top:6px;line-height:1.2}
+.lyr-body{overflow-y:auto;padding:16px 20px 28px;scroll-behavior:smooth;overscroll-behavior:contain}
+.lyr-body::-webkit-scrollbar{width:6px}.lyr-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:9px}
+.sec{font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);opacity:.75;font-weight:600;margin:18px 0 8px}
+.sec:first-child{margin-top:0}
+.gap{height:12px}
+.ln{font-size:15.5px;line-height:1.55;color:#b9b9b9;padding:2px 8px;margin:0 -8px;border-radius:6px;transition:color .25s,background .25s}
+.lyrics.timed .ln{cursor:pointer}
+.lyrics.timed .ln:hover{background:var(--bg3)}
+.lyrics.timed .ln{color:#6f6f6f}
+.lyrics.timed .ln.past{color:#9a9a9a}
+.ln.on{color:#fff;background:var(--gold-dim);font-weight:600}
+.lyrics.sync .ln.next{outline:1px dashed rgba(245,166,35,.6)}
+.syncbar{padding:12px 20px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text2);display:none;gap:10px;flex-direction:column}
+.lyrics.sync .syncbar{display:flex}
+.syncbar .sb-row{display:flex;gap:8px;flex-wrap:wrap}
+.syncbar textarea{width:100%;height:90px;background:var(--bg);border:1px solid var(--border2);color:var(--text2);border-radius:8px;font:11px ui-monospace,Menlo,monospace;padding:8px;display:none}
+
+.note{margin-top:40px;font-size:13px;color:var(--text3);line-height:1.7;max-width:760px}
+.verify{margin-top:14px;font-size:12.5px;color:var(--text3);line-height:1.7;max-width:760px;border-left:2px solid rgba(245,166,35,.35);padding-left:14px}
+.verify code{font-family:ui-monospace,Menlo,monospace;color:var(--text2);font-size:12px;background:var(--bg3);padding:1px 6px;border-radius:5px}
 footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text-align:center;font-size:12px;color:var(--text3)}
 
+@media (max-width:1000px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .lyrics{position:relative;top:0;max-height:60vh;margin-top:-6px}
+}
 @media (max-width:560px){
   .nav{padding:0 16px}
   .wrap{padding:44px 16px 32px}
   .track{flex-direction:column;align-items:stretch}
   .cover{width:100%;height:150px;font-size:16px}
+  .lyr-head{padding:16px 16px 12px}.lyr-body{padding:14px 16px 24px}
 }
 </style>
 </head>
@@ -88,11 +133,12 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text
   <div class="glow"></div>
   <div class="pill">Maquettes · gratuit</div>
   <h1>Les maquettes,<br><span>telles quelles.</span></h1>
-  <p class="intro">Les bounces originaux de Davis Johnes, sortis de la session sans retouche. À écouter ici, à télécharger gratuitement, le temps que ça dure.</p>
+  <p class="intro">Les bounces originaux de Davis Johnes, sortis de la session sans retouche. À écouter ici avec les paroles, à télécharger gratuitement, le temps que ça dure.</p>
 
+  <div class="layout">
   <section class="tracks">
 
-    <article class="track">
+    <article class="track" data-slug="too-litt-rmx" data-title="Jessica &amp; Thor (Too Lit rmx)">
       <div class="cover tl">Jessica<br>&amp; Thor</div>
       <div class="meta">
         <div class="tag">Maquette 1 · 01.10.2026</div>
@@ -109,10 +155,14 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text
           <!-- Lien futur : https://arapiano.fr/tribune/too-litt-rmx/article.html -->
           <span class="btn btn-ghost" title="Bientôt">Lire l'analyse · bientôt</span>
         </div>
+        <div class="facts">
+          <div><b>Texte écrit le</b> 01.10.2026 · <b>Bounce du</b> 01.10.2026 à 20h59</div>
+          <div class="hash"><b>SHA-256</b> <code title="871e0219964cdebe27ef0b7c0ba1c5cda7767c67775279bb9ff557ac6ce915bd">871e0219964cdebe27ef0b7c0ba1c5cda7767c67775279bb9ff557ac6ce915bd</code><button class="copy" data-h="871e0219964cdebe27ef0b7c0ba1c5cda7767c67775279bb9ff557ac6ce915bd">copier</button></div>
+        </div>
       </div>
     </article>
 
-    <article class="track">
+    <article class="track" data-slug="la-vie-est-chere" data-title="LA VIE EST CHERE">
       <div class="cover lvc">La vie<br>est chère</div>
       <div class="meta">
         <div class="tag">Mix 1 · 19.03.2025</div>
@@ -129,36 +179,175 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 24px;text
           <!-- Lien futur : https://arapiano.fr/tribune/la-vie-est-chere/article.html -->
           <span class="btn btn-ghost" title="Bientôt">Lire l'analyse · bientôt</span>
         </div>
+        <div class="facts">
+          <div><b>Texte écrit le</b> 15.03.2025 · <b>Bounce du</b> 19.03.2025 à 13h06</div>
+          <div class="hash"><b>SHA-256</b> <code title="c8db7911e3f8548931fba44f9118f327c9194a6e5d44406dfb7175620bf6d2b3">c8db7911e3f8548931fba44f9118f327c9194a6e5d44406dfb7175620bf6d2b3</code><button class="copy" data-h="c8db7911e3f8548931fba44f9118f327c9194a6e5d44406dfb7175620bf6d2b3">copier</button></div>
+        </div>
       </div>
     </article>
 
   </section>
 
+  <aside class="lyrics" id="lyrics" aria-live="polite">
+    <div class="lyr-head">
+      <div class="lyr-k">Paroles <span id="lyrMode">karaoké bientôt</span></div>
+      <div class="lyr-t" id="lyrTitle"></div>
+    </div>
+    <div class="lyr-body" id="lyrBody"></div>
+    <div class="syncbar" id="syncbar">
+      <div><b>Mode synchro.</b> Lance la lecture, puis appuie sur <b>Espace</b> (ou touche les paroles) au début de chaque ligne. <b>Retour arrière</b> annule la dernière.</div>
+      <div class="sb-row">
+        <button class="btn btn-line" id="sbReset">Recommencer</button>
+        <button class="btn btn-gold" id="sbCopy">Copier les temps</button>
+      </div>
+      <textarea id="sbOut" readonly></textarea>
+    </div>
+  </aside>
+  </div>
+
   <p class="note">Maquettes non masterisées, écoute et téléchargement gratuits. Usage personnel.</p>
+  <p class="verify"><b>Comment vérifier.</b> Chaque fichier a une empreinte SHA-256 unique. Après téléchargement, la commande <code>shasum -a 256 fichier.mp3</code> (Mac, Linux) doit redonner exactement l'empreinte affichée : c'est la preuve que c'est le même fichier, bit pour bit.</p>
 </main>
 
 <footer>🇫🇷 RGPD · Aucune donnée collectée · Aucun cookie, aucun traceur</footer>
 
+<!-- Paroles : {"s":section} · {"gap":true} · {"t":secondes|null,"l":ligne}. Les temps viennent du mode synchro (?sync=<slug>). -->
+<script type="application/json" id="paroles">{
+"too-litt-rmx": [{"s": "Intro"}, {"t": null, "l": "J'en connais une compliqué"}, {"t": null, "l": "Elle s'appelle Jessica"}, {"t": null, "l": "Oui son blase tourne en replay"}, {"t": null, "l": "Mais toute mes balles font que ripper (ohh yeah)"}, {"s": "Refrain"}, {"t": null, "l": "Toi et moi on s'enjaille oui ou non ?"}, {"t": null, "l": "On s'enjaille oui ou non ?"}, {"t": null, "l": "Tu succombe a mon charme oui ou non ?"}, {"t": null, "l": "Fast life dit oui ou non ?"}, {"t": null, "l": "(Fait un choix dit oui ou non)"}, {"t": null, "l": "C'est ça qui m'rend bête"}, {"t": null, "l": "C'est ça qui m'embête chez toi"}, {"gap": true}, {"t": null, "l": "Pourquoi t'es sans cesse sur mes côtes ?"}, {"t": null, "l": "Tu me prends la tête et puis t'es distante"}, {"t": null, "l": "A chaque fois qu'tu m'texte j'suis ek mes potes"}, {"t": null, "l": "Toi t'es dans le noir avec des nuits blanches"}, {"t": null, "l": "J'fais rien de rien je n'te trompe pas"}, {"t": null, "l": "Chérie baby dou Chérie"}, {"t": null, "l": "Oui je répond pas mais je te trompe pas"}, {"t": null, "l": "J'veux pas qu'ton petit coeur s'abime"}, {"t": null, "l": "Si lucky baby j'sui lucky"}, {"t": null, "l": "Meme si défois j'ai tord non j'suis pas Loki"}, {"t": null, "l": "Nindo d'goku jamais tu s'ra coku"}, {"t": null, "l": "Meme si défois j'ai tord non j'suis pas Loki"}, {"t": null, "l": "Si lucky baby j'sui lucky"}, {"t": null, "l": "Meme si défois j'ai tord non j'suis pas Loki"}, {"t": null, "l": "…(silence)"}, {"t": null, "l": "Meme si défois j'ai tord non j'suis pas Loki"}, {"s": "Refrain"}, {"t": null, "l": "Toi et moi on s'enjaille oui ou non ?"}, {"t": null, "l": "On s'enjaille oui ou non ?"}, {"t": null, "l": "Tu succombe a mon charme oui ou non ?"}, {"t": null, "l": "Fast life dit oui ou non ?"}, {"t": null, "l": "(Fait un choix dit oui ou non)"}, {"t": null, "l": "C'est ça qui m'rend bête"}, {"t": null, "l": "C'est ça qui m'embête chez toi"}],
+"la-vie-est-chere": [{"s": "Refrain"}, {"t": null, "l": "« Gael Davis »"}, {"t": null, "l": "Aie"}, {"t": null, "l": "« Qui sont tes acolytes? »"}, {"t": null, "l": "2 bombes anatomiques (2 androïdes)"}, {"t": null, "l": "« Qu'est ce que tu veux ? »"}, {"t": null, "l": "La vérité"}, {"t": null, "l": "« Va falloir qu'tu luttes »"}, {"t": null, "l": "Absolument"}, {"t": null, "l": "« C'est ta décision ? Mais ne perd pas tout émotions »"}, {"t": null, "l": "Comme un computer"}, {"t": null, "l": "« Si t'as des questions d'mande à la Lune car c'est sa gestion »"}, {"s": "Couplet 1"}, {"t": null, "l": "La vie est chère Djo"}, {"t": null, "l": "Il m'Faut BTC Ether Gros"}, {"t": null, "l": "J'veux piscine pergo"}, {"t": null, "l": "Passer de terre à eau en une secondo"}, {"t": null, "l": "Toi Va t'faire beau"}, {"t": null, "l": "Puis va t'faire niqu'"}, {"t": null, "l": "J'suis comme Copernic"}, {"t": null, "l": "J'casse tout tes mythes"}, {"t": null, "l": "Puis mode Ermite"}, {"t": null, "l": "J'veux palper qu'des billets des billets"}, {"t": null, "l": "Pendant qu'j'écoute mix de D.A"}, {"t": null, "l": "J'vérifie les sommes tout y est"}, {"t": null, "l": "Le propre de l'Homme c'est qu'on ne peut s'y fier"}, {"t": null, "l": "La confiance est dead c'est grillé"}, {"t": null, "l": "J'rap et J'matte les tass sautiller"}, {"t": null, "l": "Ma D.A vous dead c'est plié"}, {"t": null, "l": "J'clash les tass qui veulent copier"}, {"s": "Refrain"}, {"t": null, "l": "« Gael Davis »"}, {"t": null, "l": "Aie"}, {"t": null, "l": "« Qui sont tes acolytes? »"}, {"t": null, "l": "2 bombes anatomiques (2 androïdes)"}, {"t": null, "l": "« Qu'est ce que tu veux ? »"}, {"t": null, "l": "La vérité"}, {"t": null, "l": "« Va falloir qu'tu luttes »"}, {"t": null, "l": "Absolument"}, {"t": null, "l": "« C'est ta décision ? Mais ne perd pas tout émotions »"}, {"t": null, "l": "Comme un computer"}, {"t": null, "l": "« Si t'as des questions d'mande à la Lune car c'est sa gestion »"}, {"s": "Couplet 2"}, {"t": null, "l": "Elle te dira peut etre vérité"}, {"t": null, "l": "Mais méfie toi de sa sincérité"}, {"t": null, "l": "J'crois qu'elle semera des indices"}, {"t": null, "l": "Qu'un oeil avisé pourra vérifier"}, {"t": null, "l": "Lit tout les livres et prone santé"}, {"t": null, "l": "Lutte pour vivre mais vivre en paix"}, {"t": null, "l": "Luttre contre l'hydre sort ton épée"}, {"t": null, "l": "Lutte contre le mal qui veut t'tenter"}, {"t": null, "l": "Laisse pas ton coeur loger la haine"}, {"t": null, "l": "Te transforme pas en machine humaine"}, {"t": null, "l": "Ton destin est lié à l' Humain en partant qu'aura tu léguer aux humains ?"}, {"t": null, "l": "Oh tu devras tant t'investir"}, {"t": null, "l": "Pas moyen que tu le vesqui"}, {"t": null, "l": "Oui tu devras tant t'investir"}, {"t": null, "l": "Mais ROI quand tu investis"}, {"s": "Refrain"}, {"t": null, "l": "« Gael Davis »"}, {"t": null, "l": "Aie"}, {"t": null, "l": "« Qui sont tes acolytes? »"}, {"t": null, "l": "2 bombes anatomiques (2 androïdes)"}, {"t": null, "l": "« Qu'est ce que tu veux ? »"}, {"t": null, "l": "La vérité"}, {"t": null, "l": "« Va falloir qu'tu luttes »"}, {"t": null, "l": "Absolument"}, {"t": null, "l": "« C'est ta décision ? Mais ne perd pas tout émotions »"}, {"t": null, "l": "Comme un computer"}, {"t": null, "l": "« Si t'as des questions d'mande à la Lune car c'est sa gestion »"}]
+}</script>
+
 <script>
 (function(){
   var PLAY='M8 5v14l11-7z', PAUSE='M6 4h4v16H6zm8 0h4v16h-4z';
+  var DATA={}; try{ DATA=JSON.parse(document.getElementById('paroles').textContent); }catch(e){}
   var cards=[].slice.call(document.querySelectorAll('.track'));
+  var panel=document.getElementById('lyrics'), body=document.getElementById('lyrBody'),
+      ttl=document.getElementById('lyrTitle'), mode=document.getElementById('lyrMode'),
+      layout=document.querySelector('.layout');
+  var mq=window.matchMedia('(max-width:1000px)');
+  var active=null, lines=[], params=new URLSearchParams(location.search), syncSlug=params.get('sync');
+  var sync={on:false, idx:0, times:[]};
+
   function fmt(t){ if(!isFinite(t)||t<0) t=0; var m=Math.floor(t/60), s=Math.floor(t%60); return m+':'+(s<10?'0':'')+s; }
-  cards.forEach(function(card){
-    var a=card.querySelector('audio'), btn=card.querySelector('.play'), path=btn.querySelector('path'),
-        bar=card.querySelector('.bar'), fill=card.querySelector('.fill'), cur=card.querySelector('.cur');
-    btn.addEventListener('click',function(){
-      if(a.paused){ cards.forEach(function(c){ var o=c.querySelector('audio'); if(o!==a) o.pause(); }); a.play(); } else a.pause();
+  function audioOf(card){ return card.querySelector('audio'); }
+  function isTimed(arr){ return arr.some(function(x){ return 'l' in x && typeof x.t==='number'; }); }
+
+  function place(){
+    if(!active) return;
+    if(mq.matches){ if(panel.previousElementSibling!==active) active.after(panel); }
+    else if(panel.parentNode!==layout){ layout.appendChild(panel); }
+  }
+
+  function render(card){
+    var slug=card.dataset.slug, arr=DATA[slug]||[];
+    ttl.textContent=card.dataset.title;
+    body.innerHTML=''; lines=[];
+    arr.forEach(function(x){
+      var el;
+      if(x.s){ el=document.createElement('div'); el.className='sec'; el.textContent=x.s; }
+      else if(x.gap){ el=document.createElement('div'); el.className='gap'; }
+      else {
+        el=document.createElement('div'); el.className='ln'; el.textContent=x.l;
+        var i=lines.length; lines.push({el:el, t:(typeof x.t==='number'?x.t:null), ref:x});
+        el.addEventListener('click',function(ev){
+          ev.stopPropagation();
+          if(sync.on){ mark(); return; }
+          var ln=lines[i]; if(ln.t!==null){ var a=audioOf(active); a.currentTime=ln.t; if(a.paused) play(active); }
+        });
+      }
+      body.appendChild(el);
     });
+    if(!arr.length){ body.innerHTML='<div class="ln">Paroles bientôt.</div>'; }
+    var timed=isTimed(arr);
+    panel.classList.toggle('timed',timed && !sync.on);
+    mode.textContent= sync.on ? 'mode synchro' : (timed ? 'karaoké' : 'karaoké bientôt');
+    body.scrollTop=0;
+  }
+
+  function select(card){
+    if(active===card) return;
+    cards.forEach(function(c){ c.classList.toggle('active',c===card); });
+    active=card; render(card); place();
+  }
+
+  function play(card){
+    cards.forEach(function(c){ var o=audioOf(c); if(c!==card) o.pause(); });
+    select(card); audioOf(card).play();
+  }
+
+  function follow(){
+    if(!active || sync.on || !panel.classList.contains('timed')) return;
+    var t=audioOf(active).currentTime, cur=-1;
+    for(var i=0;i<lines.length;i++){ if(lines[i].t!==null && lines[i].t<=t) cur=i; }
+    lines.forEach(function(ln,i){ ln.el.classList.toggle('on',i===cur); ln.el.classList.toggle('past',i<cur); });
+    if(cur>=0){
+      var el=lines[cur].el, top=el.offsetTop-body.offsetTop-body.clientHeight/3;
+      if(Math.abs(body.scrollTop-top)>4) body.scrollTop=top;
+    }
+  }
+
+  cards.forEach(function(card){
+    var a=audioOf(card), btn=card.querySelector('.play'), path=btn.querySelector('path'),
+        bar=card.querySelector('.bar'), fill=card.querySelector('.fill'), cur=card.querySelector('.cur');
+    card.addEventListener('click',function(e){ if(e.target.closest('a,button,.bar,code')) return; select(card); });
+    btn.addEventListener('click',function(){ a.paused ? play(card) : a.pause(); });
     a.addEventListener('play',function(){ path.setAttribute('d',PAUSE); btn.setAttribute('aria-label','Pause'); card.classList.add('playing'); });
     a.addEventListener('pause',function(){ path.setAttribute('d',PLAY); btn.setAttribute('aria-label','Lecture'); card.classList.remove('playing'); });
     a.addEventListener('timeupdate',function(){
       var d=a.duration; fill.style.width=(isFinite(d)&&d>0? a.currentTime/d*100:0)+'%'; cur.textContent=fmt(a.currentTime);
+      if(card===active) follow();
     });
     bar.addEventListener('click',function(e){
       var r=bar.getBoundingClientRect(), d=a.duration; if(isFinite(d)&&d>0) a.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*d;
     });
   });
+
+  // empreintes : clic = complet, bouton = copier
+  [].forEach.call(document.querySelectorAll('.hash code'),function(c){ c.addEventListener('click',function(){ c.classList.toggle('full'); }); });
+  [].forEach.call(document.querySelectorAll('.copy'),function(b){
+    b.addEventListener('click',function(){
+      var h=b.dataset.h; var done=function(){ b.textContent='copié ✓'; setTimeout(function(){ b.textContent='copier'; },1600); };
+      if(navigator.clipboard) navigator.clipboard.writeText(h).then(done,function(){}); else done();
+    });
+  });
+
+  // ---- mode synchro (?sync=<slug>) ----
+  function paintSync(){
+    lines.forEach(function(ln,i){ ln.el.classList.toggle('next',i===sync.idx); ln.el.classList.toggle('on',i===sync.idx-1); ln.el.classList.toggle('past',i<sync.idx-1); });
+    var n=lines[sync.idx]; if(n){ body.scrollTop=n.el.offsetTop-body.offsetTop-body.clientHeight/3; }
+    mode.textContent='mode synchro · '+sync.idx+'/'+lines.length;
+  }
+  function mark(){
+    if(!active || sync.idx>=lines.length) return;
+    var t=Math.round(audioOf(active).currentTime*100)/100;
+    sync.times[sync.idx]=t; sync.idx++; paintSync();
+  }
+  function undo(){ if(sync.idx>0){ sync.idx--; sync.times.length=sync.idx; paintSync(); } }
+  function output(){
+    var arr=(DATA[active.dataset.slug]||[]).map(function(x){ return x; }), k=0;
+    var res=arr.map(function(x){ if('l' in x){ var o={t:(typeof sync.times[k]==='number'?sync.times[k]:null), l:x.l}; k++; return o; } return x; });
+    var out=document.getElementById('sbOut'), txt='"'+active.dataset.slug+'": '+JSON.stringify(res);
+    out.style.display='block'; out.value=txt; out.select();
+    if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+    document.getElementById('sbCopy').textContent='Copié ✓';
+  }
+  var startCard=cards.filter(function(c){ return c.dataset.slug===syncSlug; })[0];
+  if(startCard){
+    sync.on=true; panel.classList.add('sync'); select(startCard); paintSync();
+    document.addEventListener('keydown',function(e){
+      if(e.target.tagName==='TEXTAREA') return;
+      if(e.code==='Space'){ e.preventDefault(); if(document.activeElement&&document.activeElement.blur) document.activeElement.blur(); var a=audioOf(active); if(a.paused && sync.idx===0){ play(active); } else mark(); }
+      else if(e.code==='Backspace'){ e.preventDefault(); undo(); }
+    });
+    document.addEventListener('keyup',function(e){ if(e.code==='Space' && e.target.tagName!=='TEXTAREA') e.preventDefault(); });
+    body.addEventListener('click',function(e){ if(!e.target.classList.contains('ln')) mark(); });
+    document.getElementById('sbReset').addEventListener('click',function(){ sync.idx=0; sync.times=[]; var a=audioOf(active); a.pause(); a.currentTime=0; paintSync(); });
+    document.getElementById('sbCopy').addEventListener('click',output);
+  } else {
+    select(cards[0]);
+  }
+  mq.addEventListener ? mq.addEventListener('change',place) : mq.addListener(place);
 })();
 </script>
 </body>
